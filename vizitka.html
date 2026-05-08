@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Евгений Никифоров — Разработчик</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { width: 500px; height: 500px; background: #7c3aed; top: -120px; left: -120px; }
+    .glow-2 { width: 400px; height: 400px; background: #2563eb; bottom: -80px; right: -80px; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 36px 36px 44px;
+      max-width: 380px;
+      width: 92%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      backdrop-filter: blur(14px);
+      animation: fadeIn 0.7s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Обёртка фото с градиентной рамкой */
+    .photo-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 24px;
+      padding: 3px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa, #7c3aed, #2563eb);
+      background-size: 300% 300%;
+      animation: borderShift 6s ease infinite;
+      box-shadow: 0 20px 60px rgba(124,58,237,0.35), 0 0 80px rgba(37,99,235,0.18);
+      margin-bottom: 24px;
+    }
+
+    @keyframes borderShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+
+    .avatar {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 22px;
+    }
+
+    /* Мягкое затемнение снизу фото для читаемости */
+    .photo-wrap::after {
+      content: '';
+      position: absolute;
+      left: 3px; right: 3px; bottom: 3px;
+      height: 50%;
+      border-radius: 0 0 22px 22px;
+      background: linear-gradient(to top, rgba(10,10,10,0.55), transparent);
+      pointer-events: none;
+    }
+
+    .name {
+      font-size: clamp(24px, 5.5vw, 30px);
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      background: linear-gradient(120deg, #ffffff 0%, #a78bfa 50%, #60a5fa 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shine 5s linear infinite;
+      line-height: 1.15;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .role {
+      margin-top: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #2563eb);
+      border-radius: 2px;
+      margin: 22px auto;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-4px) scale(1.08);
+      background: rgba(124,58,237,0.2);
+      color: #a78bfa;
+      box-shadow: 0 8px 24px rgba(124,58,237,0.25);
+    }
+
+    .social-link svg { width: 22px; height: 22px; fill: currentColor; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #6d28d9, #1d4ed8);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.5);
+    }
+
+    .btn:hover::before { opacity: 1; }
+    .btn:active { transform: scale(0.97); }
+
+    .btn svg {
+      width: 18px; height: 18px;
+      fill: currentColor;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .btn span { position: relative; z-index: 1; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,0.4);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+      70%  { box-shadow: 0 0 0 7px rgba(34,197,94,0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+
+    @media (max-width: 400px) {
+      .card { padding: 40px 28px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars-canvas"></canvas>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="card">
+
+    <div class="photo-wrap">
+      <img
+        class="avatar"
+        src="https://cdn4.telesco.pe/file/rWMdQ7RbCTvv2rcTW7i9dT_k1wJM5Tk0AfYfkFEymUK-wMBOaiR7x1hu0N4H16Bv328MlnUxqD6aS7Xt-h93wNKDvpjuTimJEaIdeLcv0A8ImccqHRnHTZEtfxmR3t8hU5XQHwl9N1fkZgM_7PW115huxywV8RzII1Z-SRbFW6oblR1xF9mRPDuGpej6DasByb8bC9MBznm9h31-lQUnVBeoPbqAp0VHPLoLtrpVAEz2uOtfUI_vaQIVZmnS57c98axN4XdkMVq5H_esxr0bm-ASEPPZmblrd8Xh3_UubPkPbS04AI5uA5upXUU_GWaDKtX2acYmW-AXwDs5B6U74Q.jpg"
+        alt="Евгений Никифоров"
+      >
+    </div>
+
+    <h1 class="name">Евгений Никифоров</h1>
+    <p class="role">Разработчик</p>
+
+    <div class="divider"></div>
+
+    <div class="socials">
+
+      <a class="social-link" href="https://t.me/evgeny_nikiforov" target="_blank" rel="noopener" title="Telegram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.5 4.22 12.598c-.642-.204-.657-.642.136-.953l10.826-4.176c.535-.194 1.002.131.712.752z"/>
+        </svg>
+      </a>
+
+      <a class="social-link" href="https://vk.com/dgek.nikiforov" target="_blank" rel="noopener" title="ВКонтакте">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.862-.523-2.049-1.712-1.033-1.01-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.558c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.744-.576.744z"/>
+        </svg>
+      </a>
+
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn" href="https://t.me/evgeny_nikiforov" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.5 4.22 12.598c-.642-.204-.657-.642.136-.953l10.826-4.176c.535-.194 1.002.131.712.752z"/>
+        </svg>
+        <span>Telegram</span>
+      </a>
+      <a class="btn" href="https://vk.com/dgek.nikiforov" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#4a76a8,#2d5f8a);box-shadow:0 4px 20px rgba(74,118,168,0.35);">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.862-.523-2.049-1.712-1.033-1.01-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.558c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.744-.576.744z"/>
+        </svg>
+        <span>ВКонтакте</span>
+      </a>
+    </div>
+
+    <div class="status">
+      <span class="dot"></span>
+      Открыт к новым проектам
+    </div>
+
+  </div>
+  <script>
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const fontSize = 13;
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*+=';
+
+    // Несколько потоков на каждую колонку — для плотности
+    const STREAMS_PER_COL = 2;
+    let streams = [];
+
+    function makeStream(col) {
+      return {
+        col,
+        y: Math.random() * -200,
+        speed: Math.random() * 0.6 + 0.5,
+        len: Math.floor(Math.random() * 18 + 10),
+      };
+    }
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const cols = Math.floor(canvas.width / fontSize);
+      streams = [];
+      for (let i = 0; i < cols; i++) {
+        for (let s = 0; s < STREAMS_PER_COL; s++) {
+          const st = makeStream(i);
+          st.y = Math.random() * -canvas.height;
+          streams.push(st);
+        }
+      }
+    }
+
+    function draw() {
+      // Лёгкое затемнение для шлейфа
+      ctx.fillStyle = 'rgba(10,10,10,0.12)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = `${fontSize}px monospace`;
+
+      for (const st of streams) {
+        const x = st.col * fontSize;
+
+        // Голова — белая/салатовая
+        const headCh = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = 'rgba(220,255,220,0.95)';
+        ctx.fillText(headCh, x, st.y);
+
+        // Хвост — несколько символов зелёного оттенка
+        for (let k = 1; k <= st.len; k++) {
+          const ch = chars[Math.floor(Math.random() * chars.length)];
+          const alpha = 1 - (k / st.len);
+          const green = Math.floor(120 + Math.random() * 100);
+          ctx.fillStyle = `rgba(0,${green},50,${alpha * 0.85})`;
+          ctx.fillText(ch, x, st.y - k * fontSize);
+        }
+
+        st.y += st.speed * fontSize * 0.5;
+
+        if (st.y - st.len * fontSize > canvas.height) {
+          st.y = Math.random() * -200;
+          st.speed = Math.random() * 0.6 + 0.5;
+          st.len = Math.floor(Math.random() * 18 + 10);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+    window.addEventListener('resize', resize);
+  </script>
+</body>
+</html>
