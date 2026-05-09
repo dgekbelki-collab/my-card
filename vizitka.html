@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Попова Елена — риелтор в Соликамске · жилая недвижимость</title>
+  <meta name="description" content="Попова Елена — частный риелтор в Соликамске. Покупка, продажа и инвестиции в жилую недвижимость. Звоните: +7 (952) 32-82-858">
+
+  <meta property="og:title" content="Попова Елена — риелтор в Соликамске">
+  <meta property="og:description" content="Жилая недвижимость в Соликамске. Покупка, продажа, инвестиции.">
+  <meta property="og:image" content="Elena.jpg">
+  <meta property="og:type" content="profile">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0d12;
+      --bg-soft:   #11141b;
+      --line:      rgba(255,255,255,0.08);
+      --text:      #f1ece3;
+      --muted:     #8a857a;
+      --gold:      #c9a574;
+      --gold-soft: #e0bc8a;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      overflow-x: hidden;
+    }
+
+    /* Очень мягкое золотое свечение — единственный декоративный элемент */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 25% 0%, rgba(201, 165, 116, 0.10), transparent 55%),
+        radial-gradient(ellipse at 80% 100%, rgba(201, 165, 116, 0.06), transparent 55%);
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1040px;
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+      animation: fadeIn 0.6s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Колонка с фото */
+    .photo {
+      position: relative;
+      background-image: url("Elena.jpg");
+      background-size: cover;
+      background-position: center 25%;
+      min-height: 100%;
+    }
+    .photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(11,13,18,0) 60%, rgba(11,13,18,0.55) 100%);
+    }
+
+    /* Колонка с информацией */
+    .info {
+      padding: 44px 44px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .eyebrow::after {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .name {
+      font-size: clamp(30px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .tagline {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 38ch;
+    }
+
+    /* Список контактов */
+    .contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 32px;
+      list-style: none;
+    }
+    .contact {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      margin: 0 -14px;
+      border-radius: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 15px;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .contact:hover {
+      background: rgba(201, 165, 116, 0.07);
+      color: var(--gold-soft);
+    }
+    .contact .ic {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: rgba(201, 165, 116, 0.10);
+      color: var(--gold);
+    }
+    .contact:hover .ic {
+      background: rgba(201, 165, 116, 0.18);
+    }
+    .contact .ic svg {
+      width: 17px; height: 17px;
+      fill: currentColor;
+    }
+    .contact .label {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .contact .label-top {
+      font-size: 11px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .contact .label-value {
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      word-break: break-all;
+    }
+
+    /* Главная кнопка */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      background: var(--gold);
+      color: #1a1408;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      letter-spacing: 0.2px;
+      transition: background 0.2s ease, transform 0.2s ease;
+      align-self: flex-start;
+    }
+    .cta:hover {
+      background: var(--gold-soft);
+      transform: translateY(-1px);
+    }
+    .cta:active { transform: translateY(0); }
+    .cta svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* MOBILE */
+    @media (max-width: 720px) {
+      body { padding: 0; align-items: stretch; }
+      .card {
+        grid-template-columns: 1fr;
+        border-radius: 0;
+        border: none;
+        min-height: 100vh;
+        box-shadow: none;
+      }
+      .photo {
+        aspect-ratio: 4 / 3;
+        max-height: 46vh;
+        min-height: 0;
+        background-position: center 22%;
+      }
+      .photo::after {
+        background: linear-gradient(180deg, rgba(11,13,18,0) 55%, rgba(11,13,18,0.85) 100%);
+      }
+      .info {
+        padding: 24px 22px 32px;
+      }
+      .name { margin-bottom: 10px; }
+      .tagline { margin-bottom: 22px; font-size: 14px; }
+      .contacts { margin-bottom: 22px; }
+      .cta { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card">
+    <div class="photo" role="img" aria-label="Портрет Поповой Елены"></div>
+
+    <section class="info">
+      <span class="eyebrow">Соликамск · Риелтор</span>
+
+      <h1 class="name">Попова Елена</h1>
+
+      <p class="tagline">
+        Подбор, покупка и продажа квартир в Соликамске — без переплат и сюрпризов в документах.
+      </p>
+
+      <ul class="contacts">
+        <li>
+          <a class="contact" href="tel:+79523282858">
+            <span class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.59l2.2-2.2c.27-.27.36-.66.25-1.01A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+            </span>
+            <span class="label">
+              <span class="label-top">Телефон</span>
+              <span class="label-value">+7 (952) 32-82-858</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="contact" href="mailto:1uk_komfort@mail.ru">
+            <span class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </span>
+            <span class="label">
+              <span class="label-top">Почта</span>
+              <span class="label-value">1uk_komfort@mail.ru</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="contact" href="https://vk.com/id91818609" target="_blank" rel="noopener">
+            <span class="ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12.785 16.241s.288-.032.435-.194c.135-.148.131-.427.131-.427s-.019-1.302.563-1.49c.575-.184 1.312 1.225 2.094 1.768.591.41 1.04.32 1.04.32l2.092-.03s1.094-.069.575-.954c-.043-.072-.302-.652-1.553-1.83-1.31-1.234-1.135-1.034.444-3.169.961-1.299 1.346-2.094 1.226-2.435-.115-.325-.823-.239-.823-.239l-2.354.015s-.175-.024-.305.056c-.126.078-.207.261-.207.261s-.371.999-.866 1.85c-1.045 1.793-1.463 1.888-1.633 1.776-.397-.262-.298-1.052-.298-1.612 0-1.751.262-2.481-.507-2.671-.255-.063-.443-.105-1.095-.112-.836-.009-1.544.003-1.945.202-.267.132-.473.428-.347.445.155.022.507.097.694.357.241.336.232 1.089.232 1.089s.139 2.057-.325 2.313c-.318.176-.755-.183-1.687-1.81-.477-.834-.838-1.756-.838-1.756s-.069-.171-.193-.262c-.151-.111-.362-.146-.362-.146l-2.236.014s-.336.01-.459.157c-.11.13-.009.4-.009.4s1.751 4.146 3.733 6.236c1.819 1.917 3.885 1.79 3.885 1.79z"/></svg>
+            </span>
+            <span class="label">
+              <span class="label-top">ВКонтакте</span>
+              <span class="label-value">vk.com/id91818609</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+
+      <a class="cta" href="tel:+79523282858">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.59l2.2-2.2c.27-.27.36-.66.25-1.01A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+        Позвонить
+      </a>
+    </section>
+  </main>
+
+</body>
+</html>
